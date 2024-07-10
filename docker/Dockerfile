@@ -58,8 +58,8 @@ RUN apt-get update && apt-get install -y ros-noetic-desktop-full \
    ros-noetic-turtlebot3
 
 RUN pip install scipy
+RUN pip install svgpath2mpl
 RUN pip install tabulate
-
 
 #RUN pip3 install torch==1.9.1+cu111 torchvision==0.10.1+cu111 torchaudio==0.9.1 -f https://download.pytorch.org/whl/torch_stable.html
 

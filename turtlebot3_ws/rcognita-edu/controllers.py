@@ -355,7 +355,7 @@ class ControllerOptimalPredictive:
             self.Wmin = np.zeros(self.dim_critic) 
             self.Wmax = np.ones(self.dim_critic) 
         self.N_CTRL = N_CTRL()
-        self.Stanley_CTRL = Stanley_CTRL()
+        # self.Stanley_CTRL = Stanley_CTRL()
 
     def reset(self,t0):
         """
@@ -413,9 +413,9 @@ class ControllerOptimalPredictive:
         else:
             raise ValueError(f"Running objective structure {self.run_obj_struct} was not recognized.")
         
-        ######################################################################################################
-        ################################# write down here cost-function #####################################
-        #####################################################################################################
+        # ######################################################################################################
+        # ################################# write down here cost-function #####################################
+        # #####################################################################################################
 
         return run_obj
 
@@ -535,7 +535,7 @@ class ControllerOptimalPredictive:
         -------------         
         
         Add your modes, that you introduced in :func:`~controllers.ControllerOptimalPredictive._actor_cost`, here.
-
+t
         """       
         
         time_in_sample = t - self.ctrl_clock
@@ -552,9 +552,9 @@ class ControllerOptimalPredictive:
                 
                 action = self.N_CTRL.pure_loop(observation)
 
-            elif self.mode == "Stanley_CTRL":
+            # elif self.mode == "Stanley_CTRL":
 
-                action = self.Stanley_CTRL.pure_loop(observation)
+            #     action = self.Stanley_CTRL.pure_loop(observation)
             
             self.action_curr = action
             
@@ -564,11 +564,7 @@ class ControllerOptimalPredictive:
             return self.action_curr
 
 class N_CTRL:
-
-    #####################################################################################################
-    ########################## write down here nominal controller class #################################
-    #####################################################################################################
-
+    
     def __init__(self):
         self.counter = 0
         self.linear_speed = 2.5
@@ -578,6 +574,9 @@ class N_CTRL:
         k_rho = 1.0
         k_alpha = 2.0
         k_beta = -1.5
+        # k_rho = 0.2
+        # k_alpha = 0.17
+        # k_beta = 0.05
 
         x_goal = 0
         y_goal = 0
@@ -598,10 +597,13 @@ class N_CTRL:
 
         if -np.pi < alpha <= -np.pi/2 or np.pi/2 < alpha <= np.pi:
             v = -v
+        
+        if e_x < 0.01 and e_y < 0.01:
+            v = 0
+            w = 0
 
         return [v, w]
     
-
 class  Traj_Gen:
     def __init__(self,n):
         self.n = n
@@ -621,47 +623,47 @@ class  Traj_Gen:
 
         return x_traj, y_traj, theta_traj
 
-trajectory_generator = Traj_Gen(35) # Change the number of points
-x_traj, y_traj, theta_traj = trajectory_generator.generate_trajectory()
+# trajectory_generator = Traj_Gen(35) # Change the number of points
+# x_traj, y_traj, theta_traj = trajectory_generator.generate_trajectory()
 
-class Stanley_CTRL:
+# class Stanley_CTRL:
 
-    def __init__(self):
-        self.x_traj = x_traj
-        self.y_traj = y_traj
-        self.theta_traj = theta_traj
-        self.target_point = 0
+#     def __init__(self):
+#         self.x_traj = x_traj
+#         self.y_traj = y_traj
+#         self.theta_traj = theta_traj
+#         self.target_point = 0
  
-    def pure_loop(self, observation):
-        v = 1
-        k = 1
-        L = 1
+#     def pure_loop(self, observation):
+#         v = 1
+#         k = 1
+#         L = 1
 
-        x = observation[0]
-        y = observation[1]
-        theta = observation[2]
+#         x = observation[0]
+#         y = observation[1]
+#         theta = observation[2]
 
-        x_front = x + L * np.cos(theta)
-        y_front = y + L * np.sin(theta)
+#         x_front = x + L * np.cos(theta)
+#         y_front = y + L * np.sin(theta)
 
-        old_x_ref = self.x_traj[self.target_point]
-        old_y_ref = self.y_traj[self.target_point]
+#         old_x_ref = self.x_traj[self.target_point]
+#         old_y_ref = self.y_traj[self.target_point]
 
-        dist2goal = np.sqrt((old_y_ref - y_front)**2 + (old_x_ref- x_front)**2)
+#         dist2goal = np.sqrt((old_y_ref - y_front)**2 + (old_x_ref- x_front)**2)
 
-        if dist2goal < 0.8:
-            self.target_point += 1
+#         if dist2goal < 0.8:
+#             self.target_point += 1
 
-        # self.target_point = np.argmin(dist2goal)
+#         # self.target_point = np.argmin(dist2goal)
 
-        x_ref = self.x_traj[self.target_point]
-        y_ref = self.y_traj[self.target_point]
-        theta_ref = self.theta_traj[self.target_point]
+#         x_ref = self.x_traj[self.target_point]
+#         y_ref = self.y_traj[self.target_point]
+#         theta_ref = self.theta_traj[self.target_point]
 
-        theta_e = theta_ref - theta 
+#         theta_e = theta_ref - theta 
 
-        e_front_axle = (y_ref - y) * np.cos(theta) - (x_ref - x) * np.sin(theta)
+#         e_front_axle = (y_ref - y) * np.cos(theta) - (x_ref - x) * np.sin(theta)
 
-        delta = theta_e + np.arctan((k * e_front_axle) / v)
+#         delta = theta_e + np.arctan((k * e_front_axle) / v)
 
-        return [v, delta]
+#         return [v, delta]

@@ -1,0 +1,24 @@
+System,3wrobotNI
+Controller,MPC
+dt,0.3
+state_init,[-3.         -3.          1.57079633]
+is_est_model,False
+model_est_stage,1.0
+model_est_period_multiplier,1
+model_order,5
+prob_noise_pow,False
+Nactor,12
+pred_step_size_multiplier,12.0
+buffer_size,10
+stage_obj_struct,quadratic
+R1_diag,"[1, 10, 1, 0, 0]"
+R2_diag,"[1, 10, 1, 0, 0]"
+Ncritic,4
+gamma,1.0
+critic_period_multiplier,1.0
+critic_struct,quad-nomix
+actor_struct,quad-nomix
+t [s],x [m],y [m],alpha [rad],stage_obj,accum_obj,v [m/s],omega [rad/s]
+14.632,-1.0007960001720417,0.9990116665223666,-1.589144700666349,13.507212143358732,4.05216364300762,0.22,-1.1755163138471596
+15.645,-1.1185824250598306,0.7874364860593507,-2.7270104258146395,14.888374699929454,8.518676052986455,0.14794346387713983,-0.19024116951209646
+17.012,-1.2961605507039853,0.747720681940209,-3.042733397302496,16.529120882272558,13.477412317668222,-0.11301783123352353,0.1852687289810403

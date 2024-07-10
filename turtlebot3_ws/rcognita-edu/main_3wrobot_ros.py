@@ -242,7 +242,7 @@ if __name__ == "__main__":
 
     parser.add_argument('--ctrl_mode', metavar='ctrl_mode', type=str,
                         choices=['MPC',
-                                "MPC",
+                                "N_CTRL",
                                 "Stanley_CTRL"],
                         default='MPC',
                         help='Control mode. Currently available: ' +
@@ -253,7 +253,7 @@ if __name__ == "__main__":
                         '----SQL: stacked Q-learning; ' + 
                         '----JACS: joint actor-critic (stabilizing), system-specific, needs proper setup.')
     parser.add_argument('--dt', type=float, metavar='dt',
-                        default=0.1,
+                        default=0.4,
                         help='Controller sampling time.' )
     parser.add_argument('--t1', type=float, metavar='t1',
                         default=10.0,
@@ -266,13 +266,13 @@ if __name__ == "__main__":
                         help='Initial state (as sequence of numbers); ' + 
                         'dimension is environment-specific!')
     parser.add_argument('--goal_robot_pose_x', type=float,
-                        default=1.0,
+                        default=2.0,
                         help='x-coordinate of the robot pose.')
     parser.add_argument('--goal_robot_pose_y', type=float,
-                        default=1.0,
+                        default=2.0,
                         help='y-coordinate of the robot pose.')
     parser.add_argument('--goal_robot_pose_theta', type=float,
-                        default=0.001,
+                        default=1.57,
                         help='orientation angle (in radians) of the robot pose.')
     parser.add_argument('--is_log_data', type=bool,
                         default=True,
@@ -305,7 +305,7 @@ if __name__ == "__main__":
                         default=3,
                         help='Horizon length (in steps) for predictive controllers.')
     parser.add_argument('--pred_step_size_multiplier', type=float,
-                        default=1.0,
+                        default=12.0,
                         help='Size of each prediction step in seconds is a pred_step_size_multiplier multiple of controller sampling time dt.')
     parser.add_argument('--buffer_size', type=int,
                         default=10,
@@ -316,7 +316,7 @@ if __name__ == "__main__":
                                     'biquadratic'],
                         help='Structure of stage objective function.')
     parser.add_argument('--R1_diag', type=float, nargs='+',
-                        default=[10, 100, 1, 0, 0],
+                        default=[1, 10, 1, 0, 0],
                         help='Parameter of stage objective function. Must have proper dimension. ' +
                         'Say, if chi = [observation, action], then a quadratic stage objective reads chi.T diag(R1) chi, where diag() is transformation of a vector to a diagonal matrix.')
     parser.add_argument('--R2_diag', type=float, nargs='+',

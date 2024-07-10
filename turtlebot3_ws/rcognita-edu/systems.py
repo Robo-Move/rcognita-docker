@@ -282,8 +282,7 @@ class Sys3WRobotNI(System):
         Dstate[1] = np.sin(theta) * action[0]
         Dstate[2] = action[1]
         return Dstate 
-
-        return Dstate    
+   
  
     def _disturb_dyn(self, t, disturb):
         """
